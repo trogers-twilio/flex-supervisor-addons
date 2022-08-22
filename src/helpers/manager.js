@@ -1,6 +1,9 @@
 import { Manager, QueuesStats } from '@twilio/flex-ui'
 
-const localQueuesViewFiltersKey = "queues_view_filters";
+import {
+  LOCAL_QUEUES_VIEW_FILTERS_KEY,
+  LOCAL_TEAMS_VIEW_FILTERS_KEY
+} from './enums';
 
 export const getInstance = () => {
   return Manager.getInstance()
@@ -67,11 +70,11 @@ function localStorageRemove (key) {
 }
 
 export function getLocalQueuesViewFilters () {
-  return localStorageGet(localQueuesViewFiltersKey);
+  return localStorageGet(LOCAL_QUEUES_VIEW_FILTERS_KEY);
 }
 
 export function setLocalQueuesViewFilters (selectedFilters) {
-  return localStorageSave(localQueuesViewFiltersKey, selectedFilters);
+  return localStorageSave(LOCAL_QUEUES_VIEW_FILTERS_KEY, selectedFilters);
 }
 
 export function setQueuesStatsFilter (selectedQueues) {
@@ -81,4 +84,12 @@ export function setQueuesStatsFilter (selectedQueues) {
   
   QueuesStats.setFilter((q) => selectedQueues.includes(q.friendly_name))
   QueuesStats.setSubscriptionFilter((q) => selectedQueues.includes(q.friendly_name));
+}
+
+export function getLocalTeamsViewFilters () {
+  return localStorageGet(LOCAL_TEAMS_VIEW_FILTERS_KEY);
+}
+
+export function setLocalTeamsViewFilters (selectedFilters) {
+  return localStorageSave(LOCAL_TEAMS_VIEW_FILTERS_KEY, selectedFilters);
 }

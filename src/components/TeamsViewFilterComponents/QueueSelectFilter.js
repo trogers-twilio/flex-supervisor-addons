@@ -64,9 +64,10 @@ class QueueSelectFilterClass extends React.Component {
   }
 
   _handleChange = (e, v) => {
-    const newValue = Array.isArray(e) ? e.map(o => o.value) : [];
-    this.props.handleChange(e);
-    setSelectedQueue(e);
+    const newValue = e?.value ? e.value : e;
+    console.debug('QueueSelectFilter, _handleChange, e:', e);
+    this.props.handleChange(newValue);
+    setSelectedQueue(newValue);
     const valueContainer = document.querySelector(`.${this.props.name}__value-container`);
     // Without setting scrollTop, the most recently selected option can be hidden
     // until the user manually scrolls to the bottom of the value containers
@@ -77,7 +78,8 @@ class QueueSelectFilterClass extends React.Component {
     const {
       isMultiSelect,
       name,
-      options 
+      options,
+      selectedQueue
     } = this.props;
 
     const isMulti = isMultiSelect === undefined ? true : isMultiSelect;
@@ -92,7 +94,7 @@ class QueueSelectFilterClass extends React.Component {
           options={options}
           onChange={this._handleChange}
           styles={this.selectStyles}
-          value={this.props.selectedQueue}
+          value={options.filter(o => o.value === selectedQueue)}
         />
       </FilterContainer>
     )
@@ -101,20 +103,25 @@ class QueueSelectFilterClass extends React.Component {
 
 export const QueueSelectFilter = connect(mapStateToProps)(QueueSelectFilterClass);
 
-export const QueueSelectFilterLabel = connect(mapStateToProps)(({ currentValue, selectedQueue }) => {
+export const QueueSelectFilterLabel = connect(mapStateToProps)((props) => {
   let label = 'Any';
   // if (selectedQueue && selectedQueue?.label) {
   //   label = selectedQueue.label;
   // }
-  if (currentValue && currentValue?.label) {
-    label = currentValue.label;
+  const { activeOption, currentValue, options } = props;
+  console.debug('QueueSelectFilterLabel, props:', props);
+  if (activeOption?.label) {
+    label = activeOption.label;
   }
-  else if (Array.isArray(currentValue) && currentValue.length === 1) {
-    label = `${currentValue[0]} only`;
+  else if (currentValue) {
+    label = options.find(o => o.value === currentValue)?.label || currentValue;
   }
-  else if (Array.isArray(currentValue) && currentValue.length > 1) {
-    label = `${currentValue.length} selected`;
-  }
+  // else if (Array.isArray(currentValue) && currentValue.length === 1) {
+  //   label = `${currentValue[0]} only`;
+  // }
+  // else if (Array.isArray(currentValue) && currentValue.length > 1) {
+  //   label = `${currentValue.length} selected`;
+  // }
   return (<>{label}</>);
 });
 

@@ -7,21 +7,22 @@ const sortCaseInsensitive = function (a, b) {
   return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
 }
 
+const activitiesMap = getActivities();
+
+const activities = activitiesMap && Array.from(activitiesMap.values());
+
+export const activitiesOptions = activities.sort(sortCaseInsensitive).map(a => ({
+  value: a.name,
+  label: a.name,
+  default: false
+}));
+
 export const activitiesFilter = () => {
-
-  const activitiesMap = getActivities();
-
-  const activities = activitiesMap && Array.from(activitiesMap.values());
-
   return{
     id: 'data.activity_name',
     title: 'Activities',
     fieldName: 'activities',
-    options: activities.sort(sortCaseInsensitive).map(a => ({
-      value: a.name,
-      label: a.name,
-      default: false
-    })),
+    options: activitiesOptions,
     customStructure: {
       field: <MultiSelectFilter isMultiSelect={true} />,
       label: <MultiSelectFilterLabel />

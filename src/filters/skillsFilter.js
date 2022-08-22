@@ -7,6 +7,8 @@ const sortCaseInsensitive = function (a, b) {
   return a.toLowerCase().localeCompare(b.toLowerCase());
 }
 
+export let skillsOptions = [];
+
 export const skillsFilter = () => {
 
   const value = getSkills();
@@ -17,16 +19,17 @@ export const skillsFilter = () => {
     value.taskrouter_skills.forEach(element => skillsArray.push(element.name));
   }
 
+  skillsOptions = skillsArray.sort(sortCaseInsensitive).map(value => ({
+    value,
+    label: value,
+    default: skillsOptions.some(o => o.value === value && o.default)
+  }));
 
   return{
     id: 'data.attributes.routing.skills',
     title: 'Skills',
     fieldName: 'skills',
-    options: skillsArray.sort(sortCaseInsensitive).map(value => ({
-      value,
-      label: value,
-      default: false
-    })),
+    options: skillsOptions,
     customStructure: {
       field: <MultiSelectFilter isMultiSelect={true} />,
       label: <MultiSelectFilterLabel />

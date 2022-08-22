@@ -2,7 +2,13 @@ import * as Flex from "@twilio/flex-ui";
 
 var workerRolesList = [];
 
+export let rolesOptions = [];
+
 let expression = "";
+
+const sortCaseInsensitive = function (a, b) {
+  return a.toLowerCase().localeCompare(b.toLowerCase());
+}
 
 // only get the manager list
 export const rolesFilterList = () => {
@@ -42,7 +48,13 @@ export const rolesFilterList = () => {
               error = "Invalid query" ;
               console.log('Error',error);
           });
-        }        
+        } else {
+          rolesOptions = workerRolesList.sort(sortCaseInsensitive).map(value => ({
+            value,
+            label: value,
+            default: rolesOptions.some(o => o.value === value && o.default) 
+          }));
+        }
       });
 
       q.search('data.attributes.roles CONTAINS ""').catch(() => {
@@ -55,10 +67,6 @@ export const rolesFilterList = () => {
   
 }
 
-const sortCaseInsensitive = function (a, b) {
-  return a.toLowerCase().localeCompare(b.toLowerCase());
-}
-
 export const rolesFilter = () => {
 
     return{
@@ -66,11 +74,7 @@ export const rolesFilter = () => {
         title: 'Roles',
         fieldName: 'roles',
         type: 'multiValue',
-        options: workerRolesList.sort(sortCaseInsensitive).map(value => ({
-          value,
-          label: value,
-          default: false
-        })),
+        options: rolesOptions,
         condition: 'IN'
       };
 

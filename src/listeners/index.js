@@ -2,8 +2,8 @@ import { Actions, Notifications } from '@twilio/flex-ui';
 
 import TaskRouterService from '../services/TaskRouterService';
 import { TeamViewQueueFilterNotification } from '../notifications';
-import { clearSelectedQueue } from '../state';
-import { getInstance } from '../helpers/manager';
+import { clearSelectedQueue, getSelectedQueue, setSelectedQueue } from '../state';
+import { getInstance, setLocalTeamsViewFilters } from '../helpers/manager';
 import { COMBINED_VIEW_NAME } from '../helpers/enums';
 
 export const initializeListeners = () => {
@@ -40,6 +40,9 @@ export const initializeListeners = () => {
   // HAS|==|EQ|!=|CONTAINS|IN|NOT IN
 
   Actions.addListener('beforeApplyTeamsViewFilters', async (payload, abortFunction) => {
+    console.debug('Saving TeamsView Filters to local storage.');
+    setLocalTeamsViewFilters(payload);
+
     const { filters } = payload;
 
     let queueEligibilityFilter = null;
@@ -50,12 +53,21 @@ export const initializeListeners = () => {
     });
 
     // if no queue filters return
-    if(!queueEligibilityFilter
-      || (Array.isArray(queueEligibilityFilter.values) && queueEligibilityFilter.values.length === 0)){
-
+    if(!queueEligibilityFilter ||
+      queueEligibilityFilter.values === "" ||
+      (Array.isArray(queueEligibilityFilter.values) && queueEligibilityFilter.values.length === 0)
+    ){
       clearSelectedQueue();
-      
       return;
+    }
+    
+    console.debug('queueEligibilityFilter:', queueEligibilityFilter);
+    const selectedQueue = getSelectedQueue();
+    const filterQueueSid = Array.isArray(queueEligibilityFilter.values)
+      ? queueEligibilityFilter.values[0]
+      : queueEligibilityFilter.values;
+    if (selectedQueue !== filterQueueSid) {
+      setSelectedQueue(filterQueueSid);
     }
 
     // create new filters by copying existing filters 
@@ -83,7 +95,7 @@ export const initializeListeners = () => {
     // now match to queue so we can convert queue expression
     // and generate new queue filters
     const queues = await TaskRouterService.getQueues();
-    const queue = queues.find(queue => {return queue.sid === queueEligibilityFilter?.values?.value})
+    const queue = queues.find(queue => {return queue.sid === filterQueueSid})
 
     const targetWorkers = queue.targetWorkers;
 

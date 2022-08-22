@@ -46,14 +46,32 @@ export class MultiSelectFilter extends React.Component {
   };
 
   componentDidUpdate() {
-    const { currentValue } = this.props;
+    const { currentValue, options } = this.props;
+    const { selectedOptions } = this.state;
 
     if (currentValue === undefined &&
-      (!this.state.selectedOptions ||
-      this.state.selectedOptions.length > 0)
+      (!selectedOptions ||
+      selectedOptions.length > 0)
     ) {
       this.setState({ selectedOptions: [] });
+      return;
     }
+
+    if (Array.isArray(currentValue) &&
+      !this.isSelectedOptionsUpdatedWithCurrentValue()
+    ) {
+      const newSelectedOptions = options.filter(o => currentValue.includes(o.value));
+      this.setState({ selectedOptions: newSelectedOptions });
+    }
+  }
+
+  isSelectedOptionsUpdatedWithCurrentValue() {
+    const { currentValue } = this.props;
+    const { selectedOptions } = this.state;
+
+    return Array.isArray(currentValue) &&
+      currentValue.every(v => selectedOptions.some(o => o.value === v)) &&
+      selectedOptions.every(o => currentValue.includes(o.value));
   }
 
   _handleChange = (e, v) => {

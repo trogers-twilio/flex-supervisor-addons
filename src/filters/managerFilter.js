@@ -5,7 +5,13 @@ import { MultiSelectFilter, MultiSelectFilterLabel } from '../components/TeamsVi
 
 var managerList = [];
 
+export let managerOptions = [];
+
 let expression = "";
+
+const sortCaseInsensitive = function (a, b) {
+  return a.toLowerCase().localeCompare(b.toLowerCase());
+}
 
 // only get the manager list
 export const managerFilterList = () => {
@@ -45,20 +51,20 @@ export const managerFilterList = () => {
               error = "Invalid query" ;
               console.log('Error',error);
           });
-        }        
+        } else {
+          managerOptions = managerList.sort(sortCaseInsensitive).map(value => ({
+            value,
+            label: value,
+            default: managerOptions.some(o => o.value === value && o.default) 
+          }));
+        }
       });
 
       q.search('data.attributes.manager CONTAINS ""').catch(() => {
           error = "Invalid query" ;
           console.log('Error',error);
       });
-  
-      
   });
-}
-
-const sortCaseInsensitive = function (a, b) {
-  return a.toLowerCase().localeCompare(b.toLowerCase());
 }
 
 export const managerFilter = () => {
@@ -66,11 +72,7 @@ export const managerFilter = () => {
       id: 'data.attributes.manager',
       title: 'Manager',
       fieldName: 'manager',
-      options: managerList.sort(sortCaseInsensitive).map(value => ({
-        value,
-        label: value,
-        default: false
-      })),
+      options: managerOptions,
       customStructure: {
         field: <MultiSelectFilter isMultiSelect={true} />,
         label: <MultiSelectFilterLabel />
