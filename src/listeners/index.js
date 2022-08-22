@@ -5,6 +5,7 @@ import { TeamViewQueueFilterNotification } from '../notifications';
 import { clearSelectedQueue, getSelectedQueue, setSelectedQueue } from '../state';
 import { getInstance, setLocalTeamsViewFilters } from '../helpers/manager';
 import { COMBINED_VIEW_NAME } from '../helpers/enums';
+import { setDefaultTeamsViewFilters } from '../filters';
 
 export const initializeListeners = () => {
   // this method supports the application of a queue filter to the teams view but
@@ -40,10 +41,13 @@ export const initializeListeners = () => {
   // HAS|==|EQ|!=|CONTAINS|IN|NOT IN
 
   Actions.addListener('beforeApplyTeamsViewFilters', async (payload, abortFunction) => {
-    console.debug('Saving TeamsView Filters to local storage.');
-    setLocalTeamsViewFilters(payload);
+    const { clearDefaults, filters } = payload;
 
-    const { filters } = payload;
+    if ((Array.isArray(filters) && filters.length > 0) || clearDefaults) {
+      setLocalTeamsViewFilters(payload);
+      setDefaultTeamsViewFilters(payload.filters);
+    }
+
 
     let queueEligibilityFilter = null;
 

@@ -61,32 +61,45 @@ export const setDefaultTeamsViewFilters = (defaultFilters) => {
   if (!Array.isArray(defaultFilters)) {
     return;
   }
-  for (const filter of defaultFilters) {
-    switch (filter.name) {
-      case activitiesFilter().id: {
-        setDefaultOptionsValues(activitiesOptions, filter.values);
-        break;
-      }
-      case locationFilter().id: {
-        setDefaultOptionsValues(locationOptions, filter.values);
-        break;
-      }
-      case managerFilter().id: {
-        setDefaultOptionsValues(managerOptions, filter.values);
-        break;
-      }
-      case skillsFilter().id: {
-        setDefaultOptionsValues(skillsOptions, filter.values);
-        break;
-      }
-      case rolesFilter().id: {
-        setDefaultOptionsValues(rolesOptions, filter.values);
-        break;
-      }
-      case queueFilter().id: {
-        setDefaultOptionsValues(queueOptions, filter.values);
-        break;
-      }
-    }
+
+  for (const filter of TeamsView.defaultProps.filters) {
+    const id = filter().id;
+    console.debug('setDefaultTeamsViewFilters, id:', id);
+    const options = filter().options;
+    console.debug('setDefaultTeamsViewFilters, options:', options);
+    const values = defaultFilters.find(f => f.name === id)?.values || [];
+    console.debug('setDefaultTeamsViewFilters, values:', values);
+    setDefaultOptionsValues(options, values);
   }
+  // const activitiesValues = defaultFilters.find(activitiesFilter().id)?.values || [];
+  // setDefaultOptionsValues(activitiesOptions, activitiesValues);
+  
+  // for (const filter of defaultFilters) {
+  //   switch (filter.name) {
+  //     case activitiesFilter().id: {
+  //       setDefaultOptionsValues(activitiesOptions, filter.values);
+  //       break;
+  //     }
+  //     case locationFilter().id: {
+  //       setDefaultOptionsValues(locationOptions, filter.values);
+  //       break;
+  //     }
+  //     case managerFilter().id: {
+  //       setDefaultOptionsValues(managerOptions, filter.values);
+  //       break;
+  //     }
+  //     case skillsFilter().id: {
+  //       setDefaultOptionsValues(skillsOptions, filter.values);
+  //       break;
+  //     }
+  //     case rolesFilter().id: {
+  //       setDefaultOptionsValues(rolesOptions, filter.values);
+  //       break;
+  //     }
+  //     case queueFilter().id: {
+  //       setDefaultOptionsValues(queueOptions, filter.values);
+  //       break;
+  //     }
+  //   }
+  // }
 }
