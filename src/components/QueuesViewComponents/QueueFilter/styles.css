@@ -1,0 +1,61 @@
+
+.queueSelectorPanel{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 100%;
+    overflow-y: scroll;
+    min-width: 250px;
+    max-width: 350px;
+    z-index: 10;
+}
+
+.queueViewer{
+   margin-left:20px;
+}
+
+.label {
+    padding: 5px !important;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.header-button-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.header-description {
+    display: flex;
+}
+
+.header-button-description {
+    margin: 0 3px;
+}
+
+
+.link {
+    color: #1975D3;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 0 3px;
+}
+
+.input {
+    color: #1975D3;
+    font-weight: bold;
+    margin: 0 5px 0 0;
+}
+
+.bold {
+    font-weight: bold;
+}
