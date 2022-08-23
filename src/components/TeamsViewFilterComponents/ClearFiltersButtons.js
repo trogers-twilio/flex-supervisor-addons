@@ -1,6 +1,8 @@
 import React from 'react';
 import { styled, Actions, Button, FlexBox } from '@twilio/flex-ui';
 
+import { getLocalTeamsViewFilters } from '../../helpers/manager';
+
 const Container = styled(FlexBox)`
     align-items: center;
     justify-content: space-between;
@@ -15,37 +17,48 @@ const ClearSelectionButton = styled(Button)`
   width: 100%;
 `;
 
-const ClearDefaultsButton = styled(Button)`
+const EraseDefaultsButton = styled(Button)`
   ${(p) => p.theme.FilterList.ResetButton}
   width: 100%;
 `;
 
 class ClearFiltersButtons extends React.PureComponent {
+  isClearSelectionButtonDisabled() {
+    const { appliedFilters } = this.props;
+
+    return Array.isArray(appliedFilters) && appliedFilters.length === 0;
+  }
+
+  isEraseDefaultsButtonDisabled() {
+    const localTeamsViewFilters = getLocalTeamsViewFilters();
+    return Array.isArray(localTeamsViewFilters?.filters) && localTeamsViewFilters.filters.length === 0;
+  }
+
   handleClearSelectionClick() {
     Actions.invokeAction('ApplyTeamsViewFilters', { filters: [] });
   }
 
-  handleClearDefaultsClick() {
+  handleEraseDefaultsClick() {
     Actions.invokeAction('ApplyTeamsViewFilters', { filters: [], clearDefaults: true });
   }
 
   render() {
     return (
       <Container noGrow className="Twilio-FilterListButtons-Container">
-        <ClearDefaultsButton
+        <EraseDefaultsButton
           className="Twilio-FilterListButtons-ResetButton"
           roundCorners={false}
-          onClick={this.handleClearDefaultsClick}
-          disabled={false}
+          onClick={this.handleEraseDefaultsClick}
+          disabled={this.isEraseDefaultsButtonDisabled()}
           variant="destructive_secondary"
         >
-          Clear Defaults
-        </ClearDefaultsButton>
+          Erase Defaults
+        </EraseDefaultsButton>
         <ClearSelectionButton
           className="Twilio-FilterListButtons-ResetButton"
           roundCorners={false}
           onClick={this.handleClearSelectionClick}
-          disabled={false}
+          disabled={this.isClearSelectionButtonDisabled()}
           variant="secondary"
         >
           Clear Selection
