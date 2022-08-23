@@ -6,6 +6,7 @@ import { COMBINED_VIEW_NAME } from '../helpers/enums';
 
 export const modSideNav = () => {
   SideNav.Content.add(
-    <CombinedRealtimeNavItem viewName={COMBINED_VIEW_NAME} key="combined-realtime-view-button" />
+    <CombinedRealtimeNavItem viewName={COMBINED_VIEW_NAME} key="combined-realtime-view-button" />,
+    { sortOrder: 2 }
   );
 };
