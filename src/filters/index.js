@@ -1,11 +1,12 @@
 import { TeamsView } from '@twilio/flex-ui';
 
-import { activitiesFilter, activitiesOptions } from './activitiesFilter';
-import { skillsFilter, skillsOptions } from './skillsFilter';
-import { managerFilter, managerFilterList, managerOptions } from './managerFilter';
-import { locationFilter, locationFilterList, locationOptions } from './locationFilter';
-import { queueFilter, queueFilterList, queueOptions } from './queueFilter';
-import { rolesFilter, rolesFilterList, rolesOptions } from './rolesFilter';
+import { activitiesFilter } from './activitiesFilter';
+import { skillsFilter } from './skillsFilter';
+import { managerFilter, managerFilterList } from './managerFilter';
+import { locationFilter, locationFilterList } from './locationFilter';
+import { queueFilter, queueFilterList } from './queueFilter';
+import { rolesFilter, rolesFilterList } from './rolesFilter';
+import { teamNameFilter, teamNameFilterList } from './teamNameFilter';
 import { getLocalTeamsViewFilters } from '../helpers/manager';
 
 export const initializeTeamsViewFilters = () => {
@@ -13,11 +14,13 @@ export const initializeTeamsViewFilters = () => {
   locationFilterList();
   queueFilterList();
   rolesFilterList();
+  teamNameFilterList();
 
   TeamsView.defaultProps.filters = [
     activitiesFilter,
     locationFilter,
     managerFilter,
+    teamNameFilter,
     skillsFilter,
     queueFilter,
     rolesFilter
@@ -26,13 +29,12 @@ export const initializeTeamsViewFilters = () => {
   const savedFilters = getLocalTeamsViewFilters();
 
   if (Array.isArray(savedFilters?.filters) && savedFilters.filters.length > 0) {
-    console.debug('Restoring saved TeamsView filters');
+    console.log('initializeTeamsViewFilters: Restoring saved TeamsView filters', savedFilters.filters);
     setDefaultTeamsViewFilters(savedFilters.filters);
   }
 }
 
 const setDefaultOptionsValues = (options, values) => {
-  console.debug('setDefaultOptionsValues, options, values:', options, values);
   if (options.length === 0) {
     if (Array.isArray(values)) {
       for (const v of values) {
@@ -48,7 +50,6 @@ const setDefaultOptionsValues = (options, values) => {
         default: true
       });
     }
-    console.debug('setDefaultOptionsValues, modified options:', options);
   } else {
     options.forEach(o => values.includes(o.value)
       ? o.default = true
@@ -64,42 +65,9 @@ export const setDefaultTeamsViewFilters = (defaultFilters) => {
 
   for (const filter of TeamsView.defaultProps.filters) {
     const id = filter().id;
-    console.debug('setDefaultTeamsViewFilters, id:', id);
     const options = filter().options;
-    console.debug('setDefaultTeamsViewFilters, options:', options);
     const values = defaultFilters.find(f => f.name === id)?.values || [];
-    console.debug('setDefaultTeamsViewFilters, values:', values);
+
     setDefaultOptionsValues(options, values);
   }
-  // const activitiesValues = defaultFilters.find(activitiesFilter().id)?.values || [];
-  // setDefaultOptionsValues(activitiesOptions, activitiesValues);
-  
-  // for (const filter of defaultFilters) {
-  //   switch (filter.name) {
-  //     case activitiesFilter().id: {
-  //       setDefaultOptionsValues(activitiesOptions, filter.values);
-  //       break;
-  //     }
-  //     case locationFilter().id: {
-  //       setDefaultOptionsValues(locationOptions, filter.values);
-  //       break;
-  //     }
-  //     case managerFilter().id: {
-  //       setDefaultOptionsValues(managerOptions, filter.values);
-  //       break;
-  //     }
-  //     case skillsFilter().id: {
-  //       setDefaultOptionsValues(skillsOptions, filter.values);
-  //       break;
-  //     }
-  //     case rolesFilter().id: {
-  //       setDefaultOptionsValues(rolesOptions, filter.values);
-  //       break;
-  //     }
-  //     case queueFilter().id: {
-  //       setDefaultOptionsValues(queueOptions, filter.values);
-  //       break;
-  //     }
-  //   }
-  // }
 }
