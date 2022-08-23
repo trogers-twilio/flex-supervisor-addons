@@ -11,7 +11,7 @@ const activitiesMap = getActivities();
 
 const activities = activitiesMap && Array.from(activitiesMap.values());
 
-export const activitiesOptions = activities.sort(sortCaseInsensitive).map(a => ({
+const activitiesOptions = activities.sort(sortCaseInsensitive).map(a => ({
   value: a.name,
   label: a.name,
   default: false

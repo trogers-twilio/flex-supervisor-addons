@@ -3,7 +3,7 @@ import React from 'react';
 import TaskRouterService from '../services/TaskRouterService';
 import { QueueSelectFilter, QueueSelectFilterLabel } from '../components/TeamsViewFilterComponents/QueueSelectFilter';
 
-export let queueOptions = [];
+let queueOptions = [];
 
 export const queueFilterList = async () => {
 

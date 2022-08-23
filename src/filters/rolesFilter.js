@@ -2,7 +2,7 @@ import * as Flex from "@twilio/flex-ui";
 
 var workerRolesList = [];
 
-export let rolesOptions = [];
+let rolesOptions = [];
 
 let expression = "";
 

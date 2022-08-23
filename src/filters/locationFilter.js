@@ -5,7 +5,7 @@ import { MultiSelectFilter, MultiSelectFilterLabel } from '../components/TeamsVi
 
 var workerLocationList = [];
 
-export let locationOptions = [];
+let locationOptions = [];
 
 let expression = "";
 
@@ -13,7 +13,7 @@ const sortCaseInsensitive = function (a, b) {
   return a.toLowerCase().localeCompare(b.toLowerCase());
 }
 
-// only get the manager list
+// only get the location list
 export const locationFilterList = () => {
   
   Flex.Manager.getInstance()

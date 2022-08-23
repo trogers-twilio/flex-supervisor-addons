@@ -65,9 +65,10 @@ class QueueSelectFilterClass extends React.Component {
 
   _handleChange = (e, v) => {
     const newValue = e?.value ? e.value : e;
-    console.debug('QueueSelectFilter, _handleChange, e:', e);
+
     this.props.handleChange(newValue);
     setSelectedQueue(newValue);
+    
     const valueContainer = document.querySelector(`.${this.props.name}__value-container`);
     // Without setting scrollTop, the most recently selected option can be hidden
     // until the user manually scrolls to the bottom of the value containers
@@ -104,24 +105,20 @@ class QueueSelectFilterClass extends React.Component {
 export const QueueSelectFilter = connect(mapStateToProps)(QueueSelectFilterClass);
 
 export const QueueSelectFilterLabel = connect(mapStateToProps)((props) => {
+  const { activeOption, currentValue, selectedQueue, options } = props;
+
   let label = 'Any';
-  // if (selectedQueue && selectedQueue?.label) {
-  //   label = selectedQueue.label;
-  // }
-  const { activeOption, currentValue, options } = props;
-  console.debug('QueueSelectFilterLabel, props:', props);
+
   if (activeOption?.label) {
     label = activeOption.label;
   }
   else if (currentValue) {
     label = options.find(o => o.value === currentValue)?.label || currentValue;
   }
-  // else if (Array.isArray(currentValue) && currentValue.length === 1) {
-  //   label = `${currentValue[0]} only`;
-  // }
-  // else if (Array.isArray(currentValue) && currentValue.length > 1) {
-  //   label = `${currentValue.length} selected`;
-  // }
+  else if (selectedQueue) {
+    label = options.find(o => o.value === selectedQueue)?.label || selectedQueue;
+  }
+
   return (<>{label}</>);
 });
 

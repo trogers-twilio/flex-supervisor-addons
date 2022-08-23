@@ -7,7 +7,7 @@ const sortCaseInsensitive = function (a, b) {
   return a.toLowerCase().localeCompare(b.toLowerCase());
 }
 
-export let skillsOptions = [];
+let skillsOptions = [];
 
 export const skillsFilter = () => {
 

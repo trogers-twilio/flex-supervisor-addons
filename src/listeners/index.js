@@ -65,7 +65,6 @@ export const initializeListeners = () => {
       return;
     }
     
-    console.debug('queueEligibilityFilter:', queueEligibilityFilter);
     const selectedQueue = getSelectedQueue();
     const filterQueueSid = Array.isArray(queueEligibilityFilter.values)
       ? queueEligibilityFilter.values[0]

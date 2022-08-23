@@ -5,7 +5,7 @@ import { MultiSelectFilter, MultiSelectFilterLabel } from '../components/TeamsVi
 
 var managerList = [];
 
-export let managerOptions = [];
+let managerOptions = [];
 
 let expression = "";
 
