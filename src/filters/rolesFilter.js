@@ -10,7 +10,7 @@ const sortCaseInsensitive = function (a, b) {
   return a.toLowerCase().localeCompare(b.toLowerCase());
 }
 
-// only get the manager list
+// only get the roles list
 export const rolesFilterList = () => {
   
   Flex.Manager.getInstance()
