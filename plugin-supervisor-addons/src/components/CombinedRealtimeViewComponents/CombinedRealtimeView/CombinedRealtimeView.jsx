@@ -39,6 +39,10 @@ const CombinedViewStyles = styled('div')`
   .Twilio-TeamFiltersPanel {
     height: 100%;
   }
+
+  .Twilio-WorkerCanvas {
+    height: 100%;
+  }
   
   hr {
     width: 100%;

@@ -7,9 +7,9 @@ import { initializeFlexUiModifications } from './flex-ui-mods';
 import { registerNotifications } from './notifications';
 import { initializeTeamsViewFilters } from './filters';
 
-const PLUGIN_NAME = 'FlexSupervisorAddonsPlugin';
+const PLUGIN_NAME = 'SupervisorAddonsPlugin';
 
-export default class FlexSupervisorAddonsPlugin extends FlexPlugin {
+export default class SupervisorAddonsPlugin extends FlexPlugin {
   constructor() {
     super(PLUGIN_NAME);
   }

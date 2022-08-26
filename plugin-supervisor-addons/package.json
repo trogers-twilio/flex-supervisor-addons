@@ -1,6 +1,6 @@
 {
-  "name": "flex-supervisor-addons",
-  "version": "0.0.0",
+  "name": "plugin-supervisor-addons",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "postinstall": "flex-plugin pre-script-check"
