@@ -1,6 +1,6 @@
 {
   "name": "plugin-supervisor-addons",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "postinstall": "flex-plugin pre-script-check"
@@ -19,7 +19,7 @@
     "@twilio-paste/icons": "^5.7.0"
   },
   "devDependencies": {
-    "@twilio/flex-ui": "2.0.0-beta.1",
+    "@twilio/flex-ui": "2.1.0",
     "react-test-renderer": "17.0.2"
   }
 }
